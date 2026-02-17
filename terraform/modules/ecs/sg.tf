@@ -1,4 +1,19 @@
-data "aws_security_group" "fargate" {
-  id = "sg-095bd1b725699538d"
-}
+resource "aws_security_group" "fargate" {
+  name        = "jaspal-strapi-fargate-sg-v2"
+  description = "Strapi Fargate SG"
+  vpc_id      = var.vpc_id
 
+  ingress {
+    from_port   = 1337
+    to_port     = 1337
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
