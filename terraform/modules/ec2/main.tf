@@ -1,32 +1,13 @@
-
-resource "aws_iam_role" "ecs_ec2_role" {
-  name = "jaspal-ecs-ec2-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Principal = { Service = "ec2.amazonaws.com" }
-      Action    = "sts:AssumeRole"
-    }]
-  })
+data "aws_iam_instance_profile" "ecs_profile" {
+  name = "ecsInstanceRole"
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_policy" {
-  role       = aws_iam_role.ecs_ec2_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-}
-
-resource "aws_iam_instance_profile" "ecs_profile" {
-  name = "jaspal-ecs-ec2-profile"
-  role = aws_iam_role.ecs_ec2_role.name
-}
 
 resource "aws_instance" "ecs" {
   ami                    = "ami-0e4d9c8f7a6b5d2c3"
   instance_type          = "t2.micro"
   subnet_id              = var.subnet_id
-  iam_instance_profile   = aws_iam_instance_profile.ecs_profile.name
+  iam_instance_profile = data.aws_iam_instance_profile.ecs_profile.name
   vpc_security_group_ids = [var.security_group_id]
 
   tags = {
