@@ -19,3 +19,15 @@ variable "vpc_id" {
 variable "subnet_ids" {
   type = list(string)
 }
+
+variable "image_url" {
+  type = string
+}
+
+variable "ecs_subnet_ids" {
+  type = list(string)
+}
+
+variable "ecs_security_group_id" {
+  type = string
+}
