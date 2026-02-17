@@ -1,12 +1,3 @@
-data "aws_ami" "ecs_ubuntu" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["*ecs-ubuntu-jammy-*"]
-  }
-}
 
 resource "aws_iam_role" "ecs_ec2_role" {
   name = "jaspal-ecs-ec2-role"
@@ -32,8 +23,8 @@ resource "aws_iam_instance_profile" "ecs_profile" {
 }
 
 resource "aws_instance" "ecs" {
-  ami                    = data.aws_ami.ecs_ubuntu.id
-  instance_type          = "t3.micro"
+  ami                    = "ami-0e4d9c8f7a6b5d2c3"
+  instance_type          = "t2.micro"
   subnet_id              = var.subnet_id
   iam_instance_profile   = aws_iam_instance_profile.ecs_profile.name
   vpc_security_group_ids = [var.security_group_id]
